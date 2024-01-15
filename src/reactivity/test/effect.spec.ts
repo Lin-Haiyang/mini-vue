@@ -24,4 +24,17 @@ describe("effect", () => {
     expect(nextAge).toBe(11);
     expect(nextName).toBe('jade2');
   })
+
+  it("runner -> should return runner when call effect", () => {
+    let foo = 10;
+    const runner = effect(() => {
+      foo++;
+      return "foo"
+    })
+
+    expect(foo).toBe(11);
+    const result = runner();
+    expect(foo).toBe(12);
+    expect(result).toBe("foo");
+  })
 })
