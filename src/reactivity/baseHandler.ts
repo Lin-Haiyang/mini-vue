@@ -1,20 +1,24 @@
 import { track, trigger } from "./effect";
-import { ReactiveFlag } from "./reactive";
+import { ReactiveFlag, reactive, readonly } from "./reactive";
+import { isObject } from "../shared";
 
 const get = createGetter();
 const set = createSetter();
 const readonlyGet = createGetter(true);
 
-function createGetter(readonly = false) {
+function createGetter(isReadonly = false) {
   return function (target, key) {
     const result = Reflect.get(target, key);
     if (key === ReactiveFlag.IS_REACTIVE) {
-      return !readonly;
+      return !isReadonly;
     } else if (key === ReactiveFlag.IS_READONLY) {
-      return readonly;
+      return isReadonly;
     }
     // 依赖收集
     track(target, key);
+    if (isObject(result)) {
+      return isReadonly ? readonly(result) : reactive(result);
+    }
     return result;
   };
 }

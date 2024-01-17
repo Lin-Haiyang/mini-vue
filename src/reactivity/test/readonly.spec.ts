@@ -24,4 +24,18 @@ describe("readonly", () => {
     expect(isReadonly(reactiveFoo)).toBe(true);
     expect(isReadonly(foo)).toBe(false);
   })
+
+  it("next readonly", () => {
+    const foo = {
+      obj: {
+        name: 'jade'
+      },
+      arr:[{ bar: 123 }]
+    };
+    const reactiveFoo = readonly(foo);
+
+    expect(isReadonly(reactiveFoo.obj)).toBe(true);
+    expect(isReadonly(reactiveFoo.arr)).toBe(true);
+    expect(isReadonly(reactiveFoo.arr)).toBe(true);
+  })
 });
