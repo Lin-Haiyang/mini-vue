@@ -61,19 +61,27 @@ export function track(target, key) {
     depsMap.set(key, deps);
   }
 
+  trackEffects(deps);
+}
+
+export function trackEffects(deps) {
   // 看看 dep 之前有没有添加过，添加过的话 那么就不添加了
   if (deps.has(activeEffect)) return;
   deps.add(activeEffect);
   activeEffect.deps.push(deps);
 }
 
-function isTracking() {
+export function isTracking() {
   return shouldTrack && activeEffect !== undefined;
 }
 
 export function trigger(target, key) {
   const depsMap = targetMap.get(target);
   const deps = depsMap.get(key);
+  triggerEffects(deps);
+}
+
+export function triggerEffects(deps) {
   for (const effect of deps) {
     if (effect.scheduler) {
       effect.scheduler();
