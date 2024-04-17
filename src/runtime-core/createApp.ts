@@ -1,7 +1,7 @@
 import { createVNode } from "./vnode";
 import { render } from "./renderer";
 
-function createApp(rootComponent) {
+export function createApp(rootComponent) {
   return {
     mount(rootContainer) {
       // 先 vnode
