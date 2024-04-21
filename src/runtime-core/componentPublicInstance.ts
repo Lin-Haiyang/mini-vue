@@ -3,6 +3,9 @@ import { hasOwn } from "../shared/index";
 const publicPropertiesMap = {
   $el(instance) {
     return instance.vnode.el;
+  },
+  $slots(instance) {
+    return instance.slots;
   }
 };
 
