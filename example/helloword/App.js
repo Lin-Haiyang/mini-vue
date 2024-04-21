@@ -1,4 +1,5 @@
 import { h } from "../../lib/guide-mini-vue.esm.js";
+import { Foo } from "./Foo.js";
 
 window.self = null;
 export const App = {
@@ -15,7 +16,11 @@ export const App = {
           console.log('onMousedown')
         }
       },
-      'mini-vue ' + this.msg
+      [
+        h('div', {class: 'parent'}, 'mini-vue ' + this.msg), 
+        h(Foo, {count: 1, age: 18})
+      ]
+      // 'mini-vue ' + this.msg
       // [
       //   h('p', { class: 'red' }, '红色'),
       //   h('p', { class: 'blue' }, '蓝色'),
