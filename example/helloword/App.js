@@ -7,12 +7,12 @@ export const App = {
     return h(
       'div',
       { id: 'box' },
-      'mini-vue ' + this.msg
-      // [
-      //   h('p', { class: 'red' }, '红色'),
-      //   h('p', { class: 'blue' }, '蓝色'),
-      //   h('p', { class: 'green' }, '绿色')
-      // ]
+      // 'mini-vue ' + this.msg
+      [
+        h('p', { class: 'red' }, '红色'),
+        h('p', { class: 'blue' }, '蓝色'),
+        h('p', { class: 'green' }, '绿色')
+      ]
     );
   },
 
