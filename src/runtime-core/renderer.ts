@@ -1,18 +1,40 @@
 import { ShapeFlags } from "../shared/shapeFlags";
 import { createComponentInstance, setupComponent } from "./component";
+import { Fragment, Text } from "./vnode";
 
 export function render(vnode, container) {
   patch(vnode, container);
 }
 
 function patch(vnode, container) {
-  // 是不是 component 或者 element 类型
-  const { shapeFlag } = vnode;
-  if (shapeFlag & ShapeFlags.ELEMENT) {
-    processElement(vnode, container);
-  } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-    processComponent(vnode, container);
+  const { shapeFlag, type } = vnode;
+
+  switch (type) {
+    case Fragment:
+      processFragment(vnode, container)
+      break;
+    case Text:
+      processText(vnode, container)
+      break;
+    default:
+      // 是不是 component 或者 element 类型
+      if (shapeFlag & ShapeFlags.ELEMENT) {
+        processElement(vnode, container);
+      } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
+        processComponent(vnode, container);
+      }
+      break;
   }
+}
+
+function processFragment(vnode, container) {
+  mountChildren(vnode, container);
+}
+
+function processText(vnode, container) {
+  const { children } = vnode;
+  const textNode = (vnode.el = document.createTextNode(children));
+  container.append(textNode);
 }
 
 function processElement(vnode, container) {
