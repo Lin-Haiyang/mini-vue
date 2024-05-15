@@ -5,6 +5,7 @@ import { createAppAPI } from "./createApp";
 import { effect } from "../reactivity/effect";
 import { EMPTY_OBJ } from "../shared";
 import { shouldUpdateComponent } from "./componentUpdateUtils";
+import { queueJobs } from "./scheduler";
 
 export function createRenderer(options) {
   const {
@@ -291,7 +292,7 @@ export function createRenderer(options) {
     const instance = (n2.component = n1.component);
     if (shouldUpdateComponent(n1, n2)) {
       instance.next = n2;
-      instance.updated();
+      instance.update();
     } else {
       n2.el = n1.el;
       instance.vnode = n2;
@@ -307,7 +308,7 @@ export function createRenderer(options) {
 
   function setupRenderEffect(instance, initialVnode, container, anchor) {
 
-    instance.updated = effect(() => {
+    instance.update = effect(() => {
       // 元素挂载
       if (!instance.isMounted) {
         const { proxy } = instance;
@@ -330,6 +331,10 @@ export function createRenderer(options) {
         patch(preSubTree, subTree, container, instance, anchor)
       }
 
+    }, {
+      scheduler() {
+        queueJobs(instance.update)
+      }
     })
 
   }
