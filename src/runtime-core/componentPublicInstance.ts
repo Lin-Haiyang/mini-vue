@@ -6,6 +6,9 @@ const publicPropertiesMap = {
   },
   $slots(instance) {
     return instance.slots;
+  },
+  $props(instance) {
+    return instance.props;
   }
 };
 
